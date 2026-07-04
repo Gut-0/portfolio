@@ -13,12 +13,6 @@ const certs = [
     status: "Scheduled · Jul 2026",
     tone: "pill-warning",
   },
-  {
-    code: "DEA-C01",
-    name: "AWS Certified Data Engineer – Associate",
-    status: "In progress",
-    tone: "pill-neutral",
-  },
 ];
 
 export default function Certifications() {
