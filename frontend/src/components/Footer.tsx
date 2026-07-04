@@ -1,5 +1,4 @@
 const contacts = [
-  { label: "Email", href: "mailto:gs.gustavoborges1@gmail.com", text: "gs.gustavoborges1@gmail.com" },
   {
     label: "LinkedIn",
     href: "https://www.linkedin.com/in/theothergustavoborges/?locale=en-US",
@@ -20,7 +19,6 @@ export default function Footer() {
           </p>
         </div>
         <div className="footer-contact">
-          <p className="footer-contact-kicker mono">CONTACT</p>
           <ul className="footer-contact-list mono">
             {contacts.map((c) => (
               <li key={c.label}>
