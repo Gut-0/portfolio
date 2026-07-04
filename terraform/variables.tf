@@ -15,6 +15,18 @@ variable "budget_alert_email" {
   type        = string
 }
 
+variable "custom_domain" {
+  description = "Custom domain for the site (empty string disables it). DNS stays at the registrar (Hostinger) via CNAMEs."
+  type        = string
+  default     = "gustavoborges.pandev.com.br"
+}
+
+variable "attach_custom_domain" {
+  description = "Set true only after the ACM validation CNAME is in place and the cert is issued — attaches the domain to CloudFront"
+  type        = bool
+  default     = false
+}
+
 variable "create_github_oidc_provider" {
   description = "Create the GitHub OIDC provider (set false if the account already has one — it is account-wide and unique)"
   type        = bool

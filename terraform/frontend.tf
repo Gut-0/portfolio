@@ -20,10 +20,15 @@ resource "aws_cloudfront_origin_access_control" "site" {
   signing_protocol                  = "sigv4"
 }
 
+locals {
+  use_custom_domain = var.custom_domain != "" && var.attach_custom_domain
+}
+
 resource "aws_cloudfront_distribution" "site" {
   enabled             = true
   default_root_object = "index.html"
   price_class         = "PriceClass_100" # US/EU edges only — enough for the audience
+  aliases             = local.use_custom_domain ? [var.custom_domain] : []
 
   origin {
     domain_name              = aws_s3_bucket.site.bucket_regional_domain_name
@@ -62,7 +67,10 @@ resource "aws_cloudfront_distribution" "site" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = true
+    cloudfront_default_certificate = local.use_custom_domain ? null : true
+    acm_certificate_arn            = local.use_custom_domain ? aws_acm_certificate_validation.site[0].certificate_arn : null
+    ssl_support_method             = local.use_custom_domain ? "sni-only" : null
+    minimum_protocol_version       = local.use_custom_domain ? "TLSv1.2_2021" : "TLSv1"
   }
 }
 

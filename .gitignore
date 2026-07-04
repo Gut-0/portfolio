@@ -26,3 +26,7 @@ crash.log
 *.zip
 .env
 .env.*
+
+# terraform plan files (can contain sensitive values)
+tfplan
+*.tfplan
