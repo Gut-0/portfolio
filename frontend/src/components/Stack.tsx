@@ -3,7 +3,11 @@ import Reveal from "./Reveal";
 const tiles = [
   { title: "LANGUAGES", chips: ["Python", "SQL", "JavaScript", "TypeScript"] },
   {
-    title: "AWS / CLOUD",
+    title: "BACKEND",
+    chips: ["Microservices", "REST APIs", "Automated Testing", "Backend Development"],
+  },
+  {
+    title: "AWS",
     chips: [
       "S3",
       "Lambda",
@@ -15,6 +19,10 @@ const tiles = [
       "Kinesis",
       "EventBridge",
     ],
+  },
+  {
+    title: "GCP",
+    chips: ["Cloud Run", "Cloud Functions", "Pub/Sub", "BigQuery"],
   },
   {
     title: "DATA ENGINEERING",

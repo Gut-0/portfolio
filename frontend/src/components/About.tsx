@@ -1,10 +1,10 @@
 import Reveal from "./Reveal";
 
 const paragraphs = [
-  "My path began in full-stack software development and evolved toward data engineering, automation, and cloud-based solutions.",
+  "My path began in full-stack software development and evolved toward backend engineering, cloud infrastructure, and automation — most recently leading the migration of an enterprise SaaS module to microservices on Google Cloud.",
   "I've delivered projects across industrial operations, agribusiness, electronic invoicing, and business-process optimization — always connecting technology to real operational problems.",
   "I'm Brazilian, with international experience in Mexico, and I work in Portuguese, English, and Spanish. That shaped how I work: direct, adaptable, technical, and comfortable in multicultural environments.",
-  "My core interests are data platforms, cloud infrastructure, automation, backend systems, and the connection between technology and business operations.",
+  "My core interests are backend systems, cloud infrastructure, automation, data platforms, and the connection between technology and business operations.",
 ];
 
 export default function About() {

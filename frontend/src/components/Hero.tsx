@@ -1,10 +1,10 @@
 import Reveal from "./Reveal";
 
 const specs = [
-  ["ROLE", "Data / Cloud Engineer"],
+  ["ROLE", "Cloud & Backend Engineer"],
   ["BASED", "Brazil · open to remote"],
   ["LANGUAGES", "PT · EN · ES"],
-  ["FOCUS", "AWS · Pipelines · IaC"],
+  ["FOCUS", "Python · AWS · GCP · IaC"],
 ];
 
 export default function Hero() {
@@ -12,13 +12,13 @@ export default function Hero() {
     <section id="top" className="hero">
       <div className="shell">
         <Reveal>
-          <p className="eyebrow mono">DATA &amp; CLOUD ENGINEER — PORTFOLIO</p>
+          <p className="eyebrow mono">CLOUD &amp; BACKEND ENGINEER (PYTHON) — PORTFOLIO</p>
         </Reveal>
         <div className="hero-grid">
           <div>
             <Reveal delay={80}>
               <h1>
-                I build data platforms and cloud infrastructure that connect technology to real
+                I build backend systems and cloud infrastructure that connect technology to real
                 business operations.
               </h1>
             </Reveal>

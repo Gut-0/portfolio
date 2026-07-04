@@ -34,7 +34,7 @@ export default function Header() {
     <header className="header">
       <div className="shell header-inner">
         <a href="#top" className="wordmark">
-          Gustavo Borges <span className="wordmark-tag mono">DATA · CLOUD</span>
+          Gustavo Borges <span className="wordmark-tag mono">CLOUD · BACKEND</span>
         </a>
         <nav className="header-nav" aria-label="Main">
           {links.map((l) => (

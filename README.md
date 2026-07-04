@@ -1,7 +1,7 @@
 # gustavo.borges — portfolio on AWS
 
-Personal site of **Gustavo Borges, Data & Cloud Engineer**, built as a real serverless
-multi-tier application on AWS — the site is also the proof of the résumé. Its one truly
+Personal site of **Gustavo Borges, Cloud & Backend Engineer (Python)**, built as a real
+serverless multi-tier application on AWS — the site is also the proof of the résumé. Its one truly
 interactive feature is the **Visitor Wall**: guests pick their country and pin a "hello"
 note to a board that holds 37 notes and resets every Monday — backed by a real API, not
 `localStorage`.
