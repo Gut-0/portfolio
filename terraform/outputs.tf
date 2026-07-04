@@ -19,8 +19,8 @@ output "cloudfront_distribution_id" {
 }
 
 output "lambda_function_name" {
-  description = "Contact Lambda name (GitHub var LAMBDA_FUNCTION_NAME)"
-  value       = aws_lambda_function.contact.function_name
+  description = "Wall Lambda name (GitHub var LAMBDA_FUNCTION_NAME)"
+  value       = aws_lambda_function.wall.function_name
 }
 
 output "deploy_role_arn" {

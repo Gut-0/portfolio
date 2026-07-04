@@ -1,23 +1,33 @@
-import Nav from "./components/Nav";
+import Header from "./components/Header";
 import Hero from "./components/Hero";
 import About from "./components/About";
-import Skills from "./components/Skills";
-import Projects from "./components/Projects";
+import Stack from "./components/Stack";
+import Work from "./components/Work";
+import Architecture from "./components/Architecture";
+import Dashboard from "./components/Dashboard";
 import Certifications from "./components/Certifications";
-import Contact from "./components/Contact";
+import Wall from "./components/Wall";
 import Footer from "./components/Footer";
+import CursorGlow from "./components/CursorGlow";
+import { useWall } from "./hooks/useWall";
 
 function App() {
+  // Single source of truth: the dashboard is derived from the same notes as the wall.
+  const wall = useWall();
+
   return (
     <>
-      <Nav />
+      <CursorGlow />
+      <Header />
       <main>
         <Hero />
         <About />
-        <Skills />
-        <Projects />
+        <Stack />
+        <Work />
+        <Architecture />
+        <Dashboard wall={wall} />
         <Certifications />
-        <Contact />
+        <Wall wall={wall} />
       </main>
       <Footer />
     </>

@@ -1,10 +1,10 @@
-# API tier: HTTP API Gateway -> Lambda (Python) -> DynamoDB.
+# API tier: HTTP API Gateway -> Lambda (Python) -> DynamoDB (visitor-wall notes).
 
-resource "aws_dynamodb_table" "messages" {
-  name         = "${var.project_name}-messages"
+resource "aws_dynamodb_table" "wall_notes" {
+  name         = "${var.project_name}-wall-notes"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "pk"
-  range_key    = "sk"
+  hash_key     = "pk" # ISO week key, e.g. 2026-W27
+  range_key    = "sk" # note id
 
   attribute {
     name = "pk"
@@ -15,16 +15,22 @@ resource "aws_dynamodb_table" "messages" {
     name = "sk"
     type = "S"
   }
+
+  # Old weeks self-clean: the Monday reset is just "a new week key" + TTL sweep.
+  ttl {
+    attribute_name = "expires_at"
+    enabled        = true
+  }
 }
 
-data "archive_file" "contact_lambda" {
+data "archive_file" "wall_lambda" {
   type        = "zip"
-  source_dir  = "${path.module}/../backend/contact"
-  output_path = "${path.module}/.build/contact.zip"
+  source_dir  = "${path.module}/../backend/wall"
+  output_path = "${path.module}/.build/wall.zip"
 }
 
-resource "aws_iam_role" "contact_lambda" {
-  name = "${var.project_name}-contact-lambda"
+resource "aws_iam_role" "wall_lambda" {
+  name = "${var.project_name}-wall-lambda"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -36,17 +42,22 @@ resource "aws_iam_role" "contact_lambda" {
   })
 }
 
-resource "aws_iam_role_policy" "contact_lambda" {
-  name = "contact-lambda"
-  role = aws_iam_role.contact_lambda.id
+resource "aws_iam_role_policy" "wall_lambda" {
+  name = "wall-lambda"
+  role = aws_iam_role.wall_lambda.id
 
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
-        Effect   = "Allow"
-        Action   = ["dynamodb:PutItem"]
-        Resource = aws_dynamodb_table.messages.arn
+        Effect = "Allow"
+        Action = [
+          "dynamodb:Query",
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:DeleteItem",
+        ]
+        Resource = aws_dynamodb_table.wall_notes.arn
       },
       {
         Effect = "Allow"
@@ -61,19 +72,19 @@ resource "aws_iam_role_policy" "contact_lambda" {
   })
 }
 
-resource "aws_lambda_function" "contact" {
-  function_name    = "${var.project_name}-contact"
-  role             = aws_iam_role.contact_lambda.arn
+resource "aws_lambda_function" "wall" {
+  function_name    = "${var.project_name}-wall"
+  role             = aws_iam_role.wall_lambda.arn
   runtime          = "python3.13"
   handler          = "handler.lambda_handler"
-  filename         = data.archive_file.contact_lambda.output_path
-  source_code_hash = data.archive_file.contact_lambda.output_base64sha256
+  filename         = data.archive_file.wall_lambda.output_path
+  source_code_hash = data.archive_file.wall_lambda.output_base64sha256
   timeout          = 10
   memory_size      = 128
 
   environment {
     variables = {
-      TABLE_NAME = aws_dynamodb_table.messages.name
+      TABLE_NAME = aws_dynamodb_table.wall_notes.name
     }
   }
 }
@@ -84,23 +95,35 @@ resource "aws_apigatewayv2_api" "api" {
 
   cors_configuration {
     allow_origins = ["https://${aws_cloudfront_distribution.site.domain_name}"]
-    allow_methods = ["POST", "OPTIONS"]
-    allow_headers = ["content-type"]
+    allow_methods = ["GET", "POST", "DELETE", "OPTIONS"]
+    allow_headers = ["content-type", "x-visitor-id"]
     max_age       = 3600
   }
 }
 
-resource "aws_apigatewayv2_integration" "contact" {
+resource "aws_apigatewayv2_integration" "wall" {
   api_id                 = aws_apigatewayv2_api.api.id
   integration_type       = "AWS_PROXY"
-  integration_uri        = aws_lambda_function.contact.invoke_arn
+  integration_uri        = aws_lambda_function.wall.invoke_arn
   payload_format_version = "2.0"
 }
 
-resource "aws_apigatewayv2_route" "contact" {
+resource "aws_apigatewayv2_route" "get_notes" {
   api_id    = aws_apigatewayv2_api.api.id
-  route_key = "POST /contact"
-  target    = "integrations/${aws_apigatewayv2_integration.contact.id}"
+  route_key = "GET /notes"
+  target    = "integrations/${aws_apigatewayv2_integration.wall.id}"
+}
+
+resource "aws_apigatewayv2_route" "post_notes" {
+  api_id    = aws_apigatewayv2_api.api.id
+  route_key = "POST /notes"
+  target    = "integrations/${aws_apigatewayv2_integration.wall.id}"
+}
+
+resource "aws_apigatewayv2_route" "delete_note" {
+  api_id    = aws_apigatewayv2_api.api.id
+  route_key = "DELETE /notes/{id}"
+  target    = "integrations/${aws_apigatewayv2_integration.wall.id}"
 }
 
 resource "aws_apigatewayv2_stage" "default" {
@@ -117,7 +140,7 @@ resource "aws_apigatewayv2_stage" "default" {
 resource "aws_lambda_permission" "apigw" {
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.contact.function_name
+  function_name = aws_lambda_function.wall.function_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.api.execution_arn}/*/*"
 }

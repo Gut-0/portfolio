@@ -61,7 +61,7 @@ resource "aws_iam_role_policy" "deploy" {
         Sid      = "UpdateLambda"
         Effect   = "Allow"
         Action   = ["lambda:UpdateFunctionCode"]
-        Resource = aws_lambda_function.contact.arn
+        Resource = aws_lambda_function.wall.arn
       },
     ]
   })

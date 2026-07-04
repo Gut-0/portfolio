@@ -50,10 +50,10 @@ jobs:
             --distribution-id "${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}" \
             --paths "/*"
 
-      - name: Update contact Lambda
-        working-directory: backend/contact
+      - name: Update wall Lambda
+        working-directory: backend/wall
         run: |
-          zip -r /tmp/contact.zip .
+          zip -r /tmp/wall.zip .
           aws lambda update-function-code \
             --function-name "${{ vars.LAMBDA_FUNCTION_NAME }}" \
-            --zip-file fileb:///tmp/contact.zip
+            --zip-file fileb:///tmp/wall.zip
