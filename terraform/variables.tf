@@ -24,7 +24,7 @@ variable "custom_domain" {
 variable "attach_custom_domain" {
   description = "Set true only after the ACM validation CNAME is in place and the cert is issued — attaches the domain to CloudFront"
   type        = bool
-  default     = false
+  default     = true # cert issued 2026-07-04
 }
 
 variable "create_github_oidc_provider" {
