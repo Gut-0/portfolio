@@ -1,0 +1,28 @@
+# macOS / IDE
+.DS_Store
+.idea/
+.vscode/
+
+# Private planning docs (PT-BR career context) — keep out of the public repo
+docs/
+
+# Node / frontend
+node_modules/
+frontend/dist/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+crash.log
+
+# Build artifacts / env
+*.zip
+.env
+.env.*
