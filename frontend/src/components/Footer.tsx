@@ -1,10 +1,13 @@
+import { GitHubIcon, LinkedInIcon } from "./icons";
+
 const contacts = [
   {
     label: "LinkedIn",
     href: "https://www.linkedin.com/in/theothergustavoborges/?locale=en-US",
     text: "in/theothergustavoborges",
+    Icon: LinkedInIcon,
   },
-  { label: "GitHub", href: "https://github.com/Gut-0", text: "github.com/Gut-0" },
+  { label: "GitHub", href: "https://github.com/Gut-0", text: "github.com/Gut-0", Icon: GitHubIcon },
 ];
 
 export default function Footer() {
@@ -22,7 +25,8 @@ export default function Footer() {
           <ul className="footer-contact-list mono">
             {contacts.map((c) => (
               <li key={c.label}>
-                <a href={c.href} target={c.href.startsWith("mailto") ? undefined : "_blank"} rel="noreferrer">
+                <a href={c.href} target="_blank" rel="noreferrer">
+                  <c.Icon size={14} />
                   {c.text}
                 </a>
               </li>

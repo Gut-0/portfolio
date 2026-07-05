@@ -1528,6 +1528,9 @@ section {
 }
 
 .footer-contact-list a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   color: var(--on-dark-body);
   text-decoration: none;
   transition: color 0.2s;
