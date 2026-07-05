@@ -8,17 +8,7 @@ const tiles = [
   },
   {
     title: "AWS",
-    chips: [
-      "S3",
-      "Lambda",
-      "API Gateway",
-      "DynamoDB",
-      "CloudFront",
-      "Glue",
-      "Athena",
-      "Kinesis",
-      "EventBridge",
-    ],
+    chips: ["S3", "Lambda", "DynamoDB", "CloudFront", "Athena", "EventBridge"],
   },
   {
     title: "GCP",
@@ -26,9 +16,9 @@ const tiles = [
   },
   {
     title: "DATA ENGINEERING",
-    chips: ["Pipelines / ETL", "Data lakes", "Parquet", "Batch ingestion"],
+    chips: ["Pipelines / ETL", "Data lakes", "Batch ingestion"],
   },
-  { title: "INFRA & DEVOPS", chips: ["Terraform", "GitHub Actions", "CI/CD", "Linux", "Git"] },
+  { title: "INFRA & DEVOPS", chips: ["GitHub Actions", "CI/CD", "Linux", "Git"] },
 ];
 
 export default function Stack() {
@@ -42,9 +32,9 @@ export default function Stack() {
           </div>
         </Reveal>
         <Reveal delay={100}>
-          <div className="stack-grid">
+          <div className="stack-rows">
             {tiles.map((tile) => (
-              <div key={tile.title} className="stack-tile">
+              <div key={tile.title} className="stack-row">
                 <h3 className="tile-kicker mono">{tile.title}</h3>
                 <div className="chip-row">
                   {tile.chips.map((chip) => (
